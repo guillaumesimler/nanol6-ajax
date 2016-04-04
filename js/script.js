@@ -12,6 +12,18 @@ function loadData() {
     $nytElem.text("");
 
     // load streetview
+    
+
+    var SVStreet = $('#street').val();
+    
+    var SVCity = $('#city').val();
+    var SVLocation= SVStreet + ', ' + SVCity;
+    
+    var SVInput='https://maps.googleapis.com/maps/api/streetview?size=600x400&location="'+ SVLocation +'"';
+
+    console.log(SVInput);
+    $body.append('<img class="bgimg" src =' + SVInput + '>' );
+
 
     // YOUR CODE GOES HERE!
 
