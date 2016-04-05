@@ -41,10 +41,35 @@ function loadData() {
             $nytElem.append('<li class="article"> <a href=" ' + article.web_url + '">' + article.headline.main + '</a> <p>' + article.snippet + '</p></li>');
         } 
 
-        }).error(function(e){
+    }).error(function(e){
             console.log(e);
             $nytHeaderElem.text('no NyTimes Articles available');
-        });
+    });
+
+    // Load Wikipedia Article
+
+    var WikiUrl = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=' + SVCity + '&prop=revisions&rvprop=content&format=json&callback=wikiCallback'
+    
+    var wikiRequestTimeout = setTimeout(function(){
+        $wikiElem.text("failed to get a wikipedia article")
+    },8000);
+
+    $.ajax({
+        url:WikiUrl,
+        dataType: "jsonp",
+        success: function(response) {
+            var articleList = response[1];
+            var articleUrl = response[3];
+
+            for (var i = 0; i < Math.min(articleList.length, 5); i++) {
+                articleStr = articleList[i];
+                var url = articleUrl[i];
+                $wikiElem.append('<li><a href="' + url + '">' + articleStr + '</a></li>');
+            };
+
+            clearTimeout(wikiRequestTimeout);
+        }
+    });
 
     return false;
 };
